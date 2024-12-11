@@ -30,7 +30,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('student');
-  const [invitationCode, setInvitationCode] = useState('');
+  const [invitationCode, setInvitationCode] = useState('PMTH24');
 
   // State variables for form validation errors
   const [nameError, setNameError] = useState('');
@@ -409,7 +409,7 @@ const Register = () => {
               <OutlinedInput
                 id="invitationCode"
                 type="text"
-                value={invitationCode}
+                value={invitationCode} 
                 onChange={(e) => {
                   setInvitationCode(e.target.value);
                   setInvitationCodeTouched(true); // Set touched on change
@@ -417,13 +417,23 @@ const Register = () => {
                 onBlur={() => setInvitationCodeTouched(true)} // Set touched on blur
                 label="Invitation Code"
                 required
-                aria-describedby="invitationCode-error-text"
+                aria-describedby="invitationCode-error-text invitationCode-hint-text"
               />
+
+              {/* Error Message */}
               {invitationCodeTouched && invitationCodeError && (
-                <FormHelperText id="invitationCode-error-text">
+                <FormHelperText id="invitationCode-error-text" error>
                   {invitationCodeError}
                 </FormHelperText>
               )}
+
+              {/* Hint Text */}
+              <FormHelperText
+  id="invitationCode-hint-text"
+  sx={{ color: 'text.secondary'}}
+>
+  Please enter the invitation code <strong>PMTH24</strong>. This code remains valid until the application exits its beta phase.
+</FormHelperText>
             </FormControl>
           )}
 
