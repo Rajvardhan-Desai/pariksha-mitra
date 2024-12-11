@@ -71,6 +71,6 @@
      VITE_API_URL=backend_url
   5. **Start the frontend development server:**
       ```bash
-          npm run dev
+    npm run dev
       
   The frontend will be available at `http://localhost:5173.`
