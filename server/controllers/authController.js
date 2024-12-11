@@ -30,18 +30,7 @@ exports.register = async (req, res) => {
       return res.status(400).json({ error: 'User already exists with this email' });
     }
 
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create a new user
-    const newUser = await User.create({
-      name,
-      email: email.toLowerCase(),
-      password: hashedPassword,
-      role,
-    });
-
+    const newUser = await User.create({ name, email, password, role });
     const token = generateToken(newUser);
 
     res.status(201).json({
@@ -72,12 +61,12 @@ exports.login = async (req, res) => {
 
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
-      return res.status(400).json({ error: 'Invalid credentials | email' });
+      return res.status(400).json({ error: 'Invalid credentials' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ error: 'Invalid credentials | pass' });
+      return res.status(400).json({ error: 'Invalid credentials' });
     }
 
     const token = generateToken(user);
