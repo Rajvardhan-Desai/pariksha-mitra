@@ -1,4 +1,3 @@
-// Home.jsx
 import React, { useState, useContext } from "react";
 import {
     AppBar,
@@ -15,7 +14,9 @@ import {
     Tooltip,
     Menu,
     MenuItem,
-    Avatar
+    Avatar,
+    useMediaQuery,
+    useTheme
 } from "@mui/material";
 import {
     Menu as MenuIcon,
@@ -39,6 +40,10 @@ const Home = () => {
 
     // Consume AuthContext
     const { user, logout } = useContext(AuthContext);
+
+    // Media query hook for responsiveness
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     const handleDrawerToggle = () => {
         setIsDrawerOpen(!isDrawerOpen);
@@ -85,7 +90,7 @@ const Home = () => {
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                     {/* Left: Hamburger Menu and Title */}
                     <Box display="flex" alignItems="center">
-                        {/* Always show the hamburger icon */}
+                        {/* Always show the hamburger icon on mobile */}
                         <IconButton
                             color="inherit"
                             edge="start"
@@ -108,10 +113,10 @@ const Home = () => {
                                 aria-haspopup="true"
                                 aria-label="Open profile menu"
                             >
-                                {user.avatarUrl ? (
+                               {user.avatarUrl ? (
                                     <Avatar alt={user.name} src={user.avatarUrl} />
-                                ) : (
-                                    <AccountCircle fontSize="large" />
+                                ) : ( 
+                                <AccountCircle fontSize="large" />
                                 )}
                             </IconButton>
                         </Tooltip>
@@ -137,9 +142,9 @@ const Home = () => {
                 <Box sx={{ p: 2, display: "flex", alignItems: "center" }}>
                     {user.avatarUrl ? (
                         <Avatar alt={user.name} src={user.avatarUrl} sx={{ mr: 2, width: 50, height: 50 }} />
-                    ) : (
-                        <AccountCircle fontSize="large" sx={{ mr: 2, width: 50, height: 50 }} />
-                    )}
+                    ) : ( 
+                    <AccountCircle fontSize="large" sx={{ mr: 2, width: 50, height: 50 }} />
+                   )} 
                     <Box>
                         <Typography variant="body1" fontWeight="bold">
                             {user.name}
@@ -158,10 +163,11 @@ const Home = () => {
                 </MenuItem>
             </Menu>
 
-            {/* Sidebar Drawer (Permanent) */}
+            {/* Sidebar Drawer */}
             <Drawer
-                variant="permanent"
+                variant={isMobile ? "temporary" : "permanent"}
                 open={isDrawerOpen}
+                onClose={handleDrawerToggle}
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
@@ -170,11 +176,13 @@ const Home = () => {
                         boxSizing: "border-box",
                         transition: "width 0.3s",
                     },
+                    display: isMobile ? 'block' : 'block',
                 }}
+                ModalProps={{ keepMounted: true }}
             >
                 <Toolbar />
                 <Box sx={{ overflow: "auto" }}>
-                    <List>
+                    <List >
                         {navItems.map((item) => (
                             <Tooltip
                                 title={isDrawerOpen ? "" : item.text}
@@ -186,13 +194,17 @@ const Home = () => {
                                     onClick={() => handleNavigation(item.route)}
                                     selected={selectedRoute === item.route}
                                     sx={{
-                                        justifyContent: isDrawerOpen ? "flex-start" : "center",
+                                        justifyContent: isDrawerOpen ? "center" : "center",
                                         paddingLeft: isDrawerOpen ? 2 : 1,
+                                        marginBottom:"5px",
+                                        width:"99%",
+                                        borderRadius: "20px", // Rounded corners for the selected item
                                         ...(selectedRoute === item.route && {
-                                            backgroundColor: 'primary.main',
+                                            backgroundColor: 'primary.main', // Background color for selected item
                                             color: 'white',
+                                            borderRadius: "20px", // Keep the rounded corners on selection
                                             '&:hover': {
-                                                backgroundColor: 'primary.dark',
+                                                backgroundColor: 'primary.dark', // Change color on hover if needed
                                             }
                                         })
                                     }}
@@ -222,7 +234,7 @@ const Home = () => {
                     flexGrow: 1,
                     bgcolor: "background.default",
                     p: 3,
-                    marginLeft: `${drawerWidth}px`,
+                    marginLeft: `${isMobile ? 0 : drawerWidth}px`,
                     transition: "margin-left 0.3s",
                     overflowY: "auto",
                 }}
