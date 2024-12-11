@@ -61,15 +61,21 @@
 ### Frontend Setup
 
   1. **Navigate to the `client` directory:**
+
       ```bash
      cd client
+      
   2. **Install frontend dependencies:**
+
      ```bash
      npm install
-  4. **Create a `.env` file in the `client` directory:**
+  3. **Create a `.env` file in the `client` directory:**
+
      ```bash
      VITE_API_URL=backend_url
-  5. **Start the frontend development server:**
+     
+  4. **Start the frontend development server:**
+
       ```bash
       npm run dev
       
