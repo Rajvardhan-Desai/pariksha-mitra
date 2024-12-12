@@ -2,8 +2,15 @@ import React, { useContext, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthContext } from './context/AuthContext';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import {
+  LoginSkeleton,
+  RegisterSkeleton,
+  HomeSkeleton,
+  NotFoundSkeleton,
+} from './components/Skeleton';
 
+// Lazy-loaded pages
 const Register = lazy(() => import('./pages/Register'));
 const Login = lazy(() => import('./pages/Login'));
 const Home = lazy(() => import('./pages/Home'));
@@ -14,42 +21,46 @@ const App = () => {
 
   return (
     <Box>
-      <Suspense
-        fallback={
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            minHeight="100vh"
-          >
-            <CircularProgress />
-          </Box>
-        }
-      >
-        <Routes>
-          <Route
-            path="/"
-            element={user ? <Navigate to="/home" /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/register"
-            element={!user ? <Register /> : <Navigate to="/home" />}
-          />
-          <Route
-            path="/login"
-            element={!user ? <Login /> : <Navigate to="/home" />}
-          />
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
+      <Routes>
+        <Route
+          path="/"
+          element={user ? <Navigate to="/home" /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/register"
+          element={
+            <Suspense fallback={<RegisterSkeleton />}>
+              <Register />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Suspense fallback={<LoginSkeleton />}>
+              <Login />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Suspense fallback={<HomeSkeleton />}>
                 <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<NotFoundSkeleton />}>
+              <NotFound />
+            </Suspense>
+          }
+        />
+      </Routes>
     </Box>
   );
 };
