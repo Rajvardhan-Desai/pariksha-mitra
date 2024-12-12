@@ -1,6 +1,5 @@
 import React, { useContext, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthContext } from './context/AuthContext';
 import { Box, CircularProgress } from '@mui/material';
@@ -15,7 +14,6 @@ const App = () => {
 
   return (
     <Box>
-      {user && <Navbar />}
       <Suspense
         fallback={
           <Box

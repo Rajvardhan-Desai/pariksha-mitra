@@ -113,10 +113,17 @@ const Login = () => {
       return;
     }
 
+    let baseURL = '';
+
+    if (process.env.NODE_ENV === 'development') {
+      // Use the environment variable only in development
+      baseURL = import.meta.env.VITE_API_URL;
+    }
+
     setLoading(true);
 
     try {
-      const { data } = await axios.post(`/api/auth/login`, { email: email.trim(), password });
+      const { data } = await axios.post(`${baseURL}/api/auth/login`, { email: email.trim(), password });
       console.log('Logged in:', data);
       login(data.user, data.token);
 
@@ -163,7 +170,7 @@ const Login = () => {
         </Typography>
 
         <Typography variant="h6" mb={2} align="center" >
-        Fill out the information below in order to access your account.
+          Fill out the information below in order to access your account.
         </Typography>
 
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}

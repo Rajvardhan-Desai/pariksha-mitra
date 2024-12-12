@@ -6,7 +6,7 @@ import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
-
+import { StyledEngineProvider } from '@mui/material/styles';
 // Import Plus Jakarta Sans font with desired weights
 import '@fontsource/plus-jakarta-sans/300.css'; // Light
 import '@fontsource/plus-jakarta-sans/400.css'; // Regular
@@ -18,6 +18,7 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
+    <StyledEngineProvider injectFirst>
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <BrowserRouter>
@@ -25,5 +26,6 @@ root.render(
         </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>
+    </StyledEngineProvider>
   </React.StrictMode>
 );

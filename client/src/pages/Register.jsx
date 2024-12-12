@@ -195,6 +195,13 @@ const Register = () => {
       return;
     }
 
+    let baseURL = '';
+
+    if (process.env.NODE_ENV === 'development') {
+      // Use the environment variable only in development
+      baseURL = import.meta.env.VITE_API_URL;
+    }
+
     setLoading(true);
 
     try {
@@ -209,7 +216,7 @@ const Register = () => {
         payload.invitationCode = invitationCode.trim();
       }
 
-      const { data } = await axios.post(`/api/auth/register`, payload);
+      const { data } = await axios.post(`${baseURL}/api/auth/register`, payload);
       login(data.user, data.token);
 
       // Set success message and open Snackbar
