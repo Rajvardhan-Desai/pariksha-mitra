@@ -1,24 +1,57 @@
-import React, { useContext } from 'react';
+import React, { useContext, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import Home from './pages/Home';
+import ProtectedRoute from './components/ProtectedRoute';
 import { AuthContext } from './context/AuthContext';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
+
+const Register = lazy(() => import('./pages/Register'));
+const Login = lazy(() => import('./pages/Login'));
+const Home = lazy(() => import('./pages/Home'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 const App = () => {
   const { user } = useContext(AuthContext);
 
   return (
     <Box>
-      {/* <Navbar /> */}
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/register" element={!user ? <Register /> : <Navigate to="/home" />} />
-        <Route path="/login" element={!user ? <Login /> : <Navigate to="/home" />} />
-        <Route path="/home" element={user ? <Home /> : <Navigate to="/login" />} />
-      </Routes>
+      {user && <Navbar />}
+      <Suspense
+        fallback={
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+          >
+            <CircularProgress />
+          </Box>
+        }
+      >
+        <Routes>
+          <Route
+            path="/"
+            element={user ? <Navigate to="/home" /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/register"
+            element={!user ? <Register /> : <Navigate to="/home" />}
+          />
+          <Route
+            path="/login"
+            element={!user ? <Login /> : <Navigate to="/home" />}
+          />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </Box>
   );
 };
