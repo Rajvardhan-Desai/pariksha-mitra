@@ -15,7 +15,6 @@
     "@fontsource/plus-jakarta-sans": "^5.1.0",
     "@mui/icons-material": "^6.1.10",
     "@mui/material": "^6.1.10",
-    "@toolpad/core": "^0.10.0",
     "axios": "^1.7.9",
     "cross-spawn": "^7.0.6",
     "framer-motion": "^11.13.4",
