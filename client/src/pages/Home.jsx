@@ -157,7 +157,7 @@ function Home() {
             }}
             session={session}
             authentication={authentication}
-            navigation={NAVIGATION(user.role)} // Pass role to NAVIGATION
+            navigation={NAVIGATION(user.role)} 
             router={router}
             theme={demoTheme}
         >
