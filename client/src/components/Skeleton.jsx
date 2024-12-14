@@ -11,13 +11,26 @@ export const LoginSkeleton = () => (
     border={1}
     borderColor="grey.300"
     borderRadius={2}
+    boxShadow={3} // Added shadow for better appearance
   >
-    <Skeleton variant="text" width="60%" height={40} sx={{ mb: 2 }} />
-    <Skeleton variant="rectangular" width="100%" height={40} sx={{ mb: 2 }} />
-    <Skeleton variant="rectangular" width="100%" height={40} sx={{ mb: 2 }} />
-    <Skeleton variant="text" width="80%" height={40} />
+    {/* Logo Placeholder */}
+    <Skeleton variant="circular" width={60} height={60} sx={{ mb: 3, mx: 'auto' }} />
+
+    {/* Title Placeholder */}
+    <Skeleton variant="text" width="50%" height={40} sx={{ mb: 2, mx: 'auto' }} />
+
+    {/* Input Field Placeholders */}
+    <Skeleton variant="rectangular" width="100%" height={48} sx={{ mb: 2 }} />
+    <Skeleton variant="rectangular" width="100%" height={48} sx={{ mb: 3 }} />
+
+    {/* Button Placeholder */}
+    <Skeleton variant="rectangular" width="100%" height={48} sx={{ mb: 2 }} />
+
+    {/* Link Placeholder */}
+    <Skeleton variant="text" width="70%" height={30} sx={{ mx: 'auto' }} />
   </Box>
 );
+
 
 // Register Skeleton
 export const RegisterSkeleton = () => (
@@ -29,13 +42,28 @@ export const RegisterSkeleton = () => (
     border={1}
     borderColor="grey.300"
     borderRadius={2}
+    boxShadow={3} // Added shadow for better appearance
   >
-    <Skeleton variant="text" width="60%" height={40} sx={{ mb: 2 }} />
-    <Skeleton variant="rectangular" width="100%" height={40} sx={{ mb: 2 }} />
-    <Skeleton variant="rectangular" width="100%" height={40} sx={{ mb: 2 }} />
-    <Skeleton variant="rectangular" width="100%" height={40} sx={{ mb: 2 }} />
+    {/* Logo Placeholder */}
+    <Skeleton variant="circular" width={60} height={60} sx={{ mb: 3, mx: 'auto' }} />
+
+    {/* Title Placeholder */}
+    <Skeleton variant="text" width="50%" height={40} sx={{ mb: 2, mx: 'auto' }} />
+
+    {/* Input Field Placeholders */}
+    <Skeleton variant="rectangular" width="100%" height={48} sx={{ mb: 2 }} />
+    <Skeleton variant="rectangular" width="100%" height={48} sx={{ mb: 2 }} />
+    <Skeleton variant="rectangular" width="100%" height={48} sx={{ mb: 2 }} />
+    <Skeleton variant="rectangular" width="100%" height={48} sx={{ mb: 3 }} />
+
+    {/* Button Placeholder */}
+    <Skeleton variant="rectangular" width="100%" height={48} sx={{ mb: 2 }} />
+
+    {/* Link Placeholder */}
+    <Skeleton variant="text" width="70%" height={30} sx={{ mx: 'auto' }} />
   </Box>
 );
+
 
 // Home Skeleton
 export const HomeSkeleton = () => (
@@ -44,17 +72,27 @@ export const HomeSkeleton = () => (
       py: 4,
       px: 2,
       display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'flex-start',
+      flexDirection: 'row',
     }}
   >
-    <Skeleton variant="text" width="30%" height={50} sx={{ mb: 2 }} />
-    <Skeleton variant="rectangular" width="100%" height={200} />
-    <Skeleton variant="text" width="50%" height={40} sx={{ mt: 2 }} />
+    {/* Sidebar Placeholder */}
+    <Box sx={{ width: '20%', pr: 2 }}>
+      <Skeleton variant="rectangular" width="100%" height={50} sx={{ mb: 2 }} />
+      <Skeleton variant="rectangular" width="100%" height={200} />
+    </Box>
+
+    {/* Main Content Placeholder */}
+    <Box sx={{ flex: 1, pl: 2 }}>
+      <Skeleton variant="text" width="30%" height={50} sx={{ mb: 2 }} />
+      <Skeleton variant="text" width="50%" height={30} sx={{ mb: 2 }} />
+      <Skeleton variant="rectangular" width="100%" height={300} sx={{ mb: 2 }} />
+      <Skeleton variant="text" width="60%" height={30} />
+    </Box>
   </Box>
 );
 
-// Not Found Skeleton (optional)
+
+// Not Found Skeleton 
 export const NotFoundSkeleton = () => (
   <Box
     sx={{
