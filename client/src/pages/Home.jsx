@@ -10,19 +10,24 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
 import { AuthContext } from '../context/AuthContext';
 
-const NAVIGATION = [
+// Dynamic NAVIGATION based on user role
+const NAVIGATION = (role) => [
     {
         segment: 'dashboard',
         title: 'Dashboard',
         icon: <DashboardIcon />,
         route: '/dashboard',
     },
-    {
-        segment: 'reports',
-        title: 'Reports',
-        icon: <BarChartIcon />,
-        route: '/reports',
-    },
+    ...(role === 'teacher'
+        ? [
+            {
+                segment: 'reports',
+                title: 'Reports',
+                icon: <BarChartIcon />,
+                route: '/reports',
+            },
+          ]
+        : []),
 ];
 
 const demoTheme = createTheme({
@@ -40,7 +45,7 @@ const demoTheme = createTheme({
     },
 });
 
-function DemoPageContent({ pathname, user, logout }) {
+function DemoPageContent({ pathname, user }) {
     return (
         <Box
             sx={{
@@ -61,9 +66,14 @@ function DemoPageContent({ pathname, user, logout }) {
                     </Typography>
                 </>
             )}
-            {pathname === "/reports" && (
+            {pathname === "/reports" && user.role === 'teacher' && (
                 <Typography variant="h5">
                     Reports Content
+                </Typography>
+            )}
+            {pathname === "/reports" && user.role !== 'teacher' && (
+                <Typography variant="h5" color="error">
+                    You do not have access to this page.
                 </Typography>
             )}
         </Box>
@@ -72,39 +82,24 @@ function DemoPageContent({ pathname, user, logout }) {
 
 DemoPageContent.propTypes = {
     pathname: PropTypes.string.isRequired,
-    user: PropTypes.object,
-    logout: PropTypes.func,
+    user: PropTypes.object.isRequired,
 };
 
 function SidebarFooter({ mini }) {
+    const currentYear = new Date().getFullYear();
     return (
         <Typography
             variant="caption"
             sx={{ m: 1, whiteSpace: 'nowrap', overflow: 'hidden' }}
+            component="a"
+            href="https://github.com/Rajvardhan-Desai"
+            target="_blank"
+            rel="noopener noreferrer"
         >
-            {mini ? (
-                <a
-                    href="https://github.com/Rajvardhan-Desai"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                   
-                >
-                    © RD
-                </a>
-            ) : (
-                <a
-                    href="https://github.com/Rajvardhan-Desai"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                   
-                >
-                    © {new Date().getFullYear()} Made by RD
-                </a>
-            )}
+            {mini ? "© RD" : `© ${currentYear} Made by RD`}
         </Typography>
     );
 }
-
 
 SidebarFooter.propTypes = {
     mini: PropTypes.bool.isRequired,
@@ -155,7 +150,6 @@ function Home() {
     const router = useDemoRouter('/dashboard');
 
     return (
-
         <AppProvider
             branding={{
                 logo: '',
@@ -163,20 +157,19 @@ function Home() {
             }}
             session={session}
             authentication={authentication}
-            navigation={NAVIGATION}
+            navigation={NAVIGATION(user.role)} // Pass role to NAVIGATION
             router={router}
             theme={demoTheme}
         >
             <DashboardLayout
                 slots={{
                     sidebarFooter: SidebarFooter,
-                }}>
+                }}
+            >
                 <DemoPageContent pathname={router.pathname} user={user} logout={logout} />
             </DashboardLayout>
         </AppProvider>
-
     );
 }
-
 
 export default Home;
